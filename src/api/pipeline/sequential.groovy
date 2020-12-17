@@ -8,14 +8,14 @@ def exec(_BuildTargets,_Name="Build",_Notif="true"){
     def M_Configuration = new system.jenkins.configuration();
     def M_System= new system.jenkins.utils();
     def M_Irc= new webServices.irc();
-    def M_Name="${_Name.tokenize(' ')[0]}"
+    def M_Name="${_Name.tokenize(' ')[0].replaceAll('%',' ')}"
 
     stage("${M_Name}"){
         for (M_Target in _BuildTargets){
             /////////////////////////////
                 M_Vars = M_Configuration.getSlaveConfiguration(env.M_Project,M_Target)
                 M_Vars["Stage"]="${_Name}"
-                M_Nodes["${M_Target.tokenize(' ')[0]}"] = step(M_Target,M_Vars)
+                M_Nodes["${M_Target.tokenize(' ')[0].replaceAll('%',' ')}"] = step(M_Target,M_Vars)
                 M_Targets.push("${M_Target}")
             /////////////////////////////
         }
